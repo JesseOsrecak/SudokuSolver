@@ -62,4 +62,35 @@ public class KillerSudokuGrid extends SudokuGrid
         return false;
     } // end of validate()
 
+    @Override
+    public char getOptionAt(int index)
+    {
+        //TODO
+
+        //placeholder
+        return '\u0000';
+    }// end of getOptionAt(int index)
+
+    @Override
+    public void insertAt(int row, int col, char value)
+    {
+        //TODO
+
+    }// end of insertAt(int row, int col, char value)
+
+    public char getValueAt(int row, int col)
+    {
+        //TODO
+
+        //placeholder
+        return '\u0000';
+    }//end of getValueAt(int row, int col)
+
+    public int getSize()
+    {
+        //TODO
+
+        //placeholder
+        return -1;
+    }//end of getSize()
 } // end of class KillerSudokuGrid

@@ -13,18 +13,64 @@ import grid.SudokuGrid;
 public class BackTrackingSolver extends StdSudokuSolver
 {
     // TODO: Add attributes as needed.
+    SudokuGrid grid;
 
-    public BackTrackingSolver() {
+    public BackTrackingSolver() 
+    {
         // TODO: any initialisation you want to implement.
     } // end of BackTrackingSolver()
 
 
     @Override
     public boolean solve(SudokuGrid grid) {
-        // TODO: your implementation of the backtracking solver for standard Sudoku.
-
-        // placeholder
-        return false;
+        
+        this.grid = grid;
+        solveCell(0,0);
+    
+        return grid.validate();
     } // end of solve()
 
-} // end of class BackTrackingSolver()
+    private boolean solveCell(int row, int col)
+    {
+        for(int index = 0; index < grid.getSize(); ++index)
+        {
+            if(grid.getValueAt(row, col) == '\u0000')
+            {
+                grid.insertAt(row, col, grid.getOptionAt(index));
+            }
+            if(grid.validate())
+            {
+                if(col < grid.getSize() -1)
+                {
+                    if(!solveCell(row, col + 1))
+                    {
+                        grid.insertAt(row, col, '\u0000');
+                    } 
+                }
+                else if(row < grid.getSize() - 1)
+                {
+                    if(!solveCell(row + 1, 0))
+                    {
+                        grid.insertAt(row, col, '\u0000');
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                grid.insertAt(row, col, '\u0000');
+            }
+        }
+        if(grid.getValueAt(row, col) == '\u0000')
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+}

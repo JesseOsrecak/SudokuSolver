@@ -18,14 +18,11 @@ import java.util.Arrays;
  */
 public class StdSudokuGrid extends SudokuGrid
 {
-    private char grid[][];
-    private char options[];
-    private int size;
+
 
     public StdSudokuGrid() {
         super();
 
-        // TODO: any necessary initialisation at the constructor
     } // end of StdSudokuGrid()
 
 
@@ -36,13 +33,13 @@ public class StdSudokuGrid extends SudokuGrid
     public void initGrid(String filename)
         throws FileNotFoundException, IOException
     {
-        //TODO
+
         File file = new File(filename); 
         String line;
         BufferedReader br = new BufferedReader(new FileReader(file)); 
 
         
-        //All code for iniatialising the grid goes here
+       
         size = Integer.parseInt(br.readLine());
         options = new char[size];
         grid = new char[size][size];
@@ -82,8 +79,8 @@ public class StdSudokuGrid extends SudokuGrid
 
 
     @Override
-    public String toString() {
-        // TODO
+    public String toString() 
+    {
         String string = "";
         for(int row = 0; row < size; ++row)
         {
@@ -109,8 +106,8 @@ public class StdSudokuGrid extends SudokuGrid
 
 
     @Override
-    public boolean validate() {
-        // TODO
+    public boolean validate() 
+    {
         boolean validated = true;
         int count;
         int square = (int)Math.sqrt(size);
@@ -160,9 +157,9 @@ public class StdSudokuGrid extends SudokuGrid
                 for(int index = 0; index < size; ++index)
                 {
                     count = 0;
-                    for(int row = i; row < i+3; ++row)
+                    for(int row = i; row < i+square; ++row)
                     {
-                        for(int col = j; col< j+3; ++col)
+                        for(int col = j; col< j+square; ++col)
                         {
                             if(grid[row][col] == options[index])
                             {
@@ -181,4 +178,27 @@ public class StdSudokuGrid extends SudokuGrid
         return validated;
     } // end of validate()
 
+    @Override
+    public char getOptionAt(int index)
+    {
+        return options[index];
+    }// end of getOptionAt(int index)
+
+    @Override
+    public void insertAt(int row, int col, char value)
+    {
+        grid[row][col] = value;
+    }// end of insertAt(int row, int col, char value)
+
+    public char getValueAt(int row, int col)
+    {
+
+        return grid[row][col];
+    }//end of getValueAt(int row, int col)
+
+    public int getSize()
+    {
+        
+        return size;
+    }//end of getSize()
 } // end of class StdSudokuGrid
