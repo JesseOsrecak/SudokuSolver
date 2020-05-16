@@ -1,0 +1,6 @@
+#testing files
+test.in
+test.out
+
+#Compiled Class files
+*.class
