@@ -112,7 +112,7 @@ public class StdSudokuGrid extends SudokuGrid
         int count;
         int square = (int)Math.sqrt(size);
         //Validate rows
-        for(int row = 0; row < size; ++row)
+        for(int row = 0; row < size && validated; ++row)
         {
             for(int index = 0; index < size; ++index)
             {
@@ -131,7 +131,7 @@ public class StdSudokuGrid extends SudokuGrid
             }
         }
         //validate collumns
-        for(int col = 0; col < size; ++col)
+        for(int col = 0; col < size && validated; ++col)
         {
             for(int index = 0; index < size; ++index)
             {
@@ -150,7 +150,7 @@ public class StdSudokuGrid extends SudokuGrid
             }
         }
         //validate subdivisions
-        for(int i = 0 ; i < size-1; i = i + square)
+        for(int i = 0 ; i < size-1 && validated; i = i + square)
         {
             for(int j = 0; j < size-1; j = j+square)
             {
@@ -174,7 +174,8 @@ public class StdSudokuGrid extends SudokuGrid
                 }
             }
         }
-
+        
+        
         return validated;
     } // end of validate()
 
