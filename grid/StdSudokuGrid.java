@@ -109,75 +109,97 @@ public class StdSudokuGrid extends SudokuGrid
     public boolean validate() 
     {
         boolean validated = true;
-        int count;
         int square = (int)Math.sqrt(size);
-        //Validate rows
-        for(int row = 0; row < size && validated; ++row)
+        //Validate rows 8 collumns
+        
+        for(int index = 0; index < size && validated; ++index)
         {
-            for(int index = 0; index < size; ++index)
-            {
-                count = 0;
-                for(int col = 0; col < size; ++col)
-                {
-                    if(options[index] == grid[row][col])
-                    {
-                        ++count;
-                    }
-                }
-                if(count > 1)
-                {
-                    validated = false;
-                }
-            }
+            validated = validateRow(index);
+            validated = validateCollumn(index);
         }
-        //validate collumns
-        for(int col = 0; col < size && validated; ++col)
-        {
-            for(int index = 0; index < size; ++index)
-            {
-                count = 0;
-                for(int row = 0; row < size; ++row)
-                {
-                    if(options[index] == grid[row][col])
-                    {
-                        ++count;
-                    }
-                }
-                if(count > 1)
-                {
-                    validated = false;
-                }
-            }
-        }
+
         //validate subdivisions
         for(int i = 0 ; i < size-1 && validated; i = i + square)
         {
             for(int j = 0; j < size-1; j = j+square)
             {
-                for(int index = 0; index < size; ++index)
-                {
-                    count = 0;
-                    for(int row = i; row < i+square; ++row)
-                    {
-                        for(int col = j; col< j+square; ++col)
-                        {
-                            if(grid[row][col] == options[index])
-                            {
-                                ++count;
-                            }
-                        }
-                    }
-                    if(count > 1)
-                    {
-                        validated = false;
-                    }
-                }
+                validated = validateSquare(i,j);
             }
         }
         
         
         return validated;
     } // end of validate()
+
+    private boolean validateRow(int row)
+    {
+        boolean validated = true;
+        int count = 0;
+        for(int index = 0; index < size && validated; ++index)
+        {
+            count = 0;
+            for(int col = 0; col < size; ++col)
+            {
+                if(options[index] == grid[row][col])
+                {
+                    ++count;
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
+
+    private boolean validateCollumn(int col)
+    {
+        boolean validated = true;
+        int count = 0;
+        for(int index = 0; index < size && validated; ++index)
+        {
+            count = 0;
+            for(int row = 0; row < size; ++row)
+            {
+                if(options[index] == grid[row][col])
+                {
+                    ++count;
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
+
+    private boolean validateSquare(int i, int j)
+    {
+        int square = (int)Math.sqrt(size);
+        int count = 0;
+        boolean validated = true;
+        for(int index = 0; index < size && validated; ++index)
+        {
+            count = 0;
+            for(int row = i; row < i+square; ++row)
+            {
+                for(int col = j; col< j+square; ++col)
+                {
+                    if(grid[row][col] == options[index])
+                    {
+                        ++count;
+                    }
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
 
     @Override
     public char getOptionAt(int index)
@@ -193,13 +215,11 @@ public class StdSudokuGrid extends SudokuGrid
 
     public char getValueAt(int row, int col)
     {
-
         return grid[row][col];
     }//end of getValueAt(int row, int col)
 
     public int getSize()
     {
-        
         return size;
     }//end of getSize()
 } // end of class StdSudokuGrid

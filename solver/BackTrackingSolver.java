@@ -32,8 +32,8 @@ public class BackTrackingSolver extends StdSudokuSolver
 
     private boolean solveCell(int row, int col)
     {
-
-        for(int index = 0; index < grid.getSize(); ++index)
+        int size = grid.getSize();
+        for(int index = 0; index < size; ++index)
         {
             
             if(grid.getValueAt(row, col) == '\u0000')
@@ -44,7 +44,7 @@ public class BackTrackingSolver extends StdSudokuSolver
             }
             if(grid.validate())
             {
-                if(col < grid.getSize()-1)
+                if(col < size-1)
                 {
                     if(!solveCell(row, col + 1))
                     {
@@ -52,10 +52,10 @@ public class BackTrackingSolver extends StdSudokuSolver
                     }
                     else
                     {
-                        index = grid.getSize();
+                        index = size;
                     } 
                 }
-                else if(row < grid.getSize() - 1)
+                else if(row < size - 1)
                 {
                     if(!solveCell(row + 1, 0))
                     {
@@ -63,12 +63,12 @@ public class BackTrackingSolver extends StdSudokuSolver
                     }
                     else
                     {
-                        index = grid.getSize();
+                        index = size;
                     }
                 }
                 else
                 {
-                    index = grid.getSize();
+                    index = size;
                 }
             }
             else
