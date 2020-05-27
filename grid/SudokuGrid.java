@@ -93,5 +93,8 @@ public abstract class SudokuGrid
      * Returns the the length/width of the grid
      * @return returns the parameter size of the grid
      */
-    public abstract int getSize();
+    public abstract int getSize();	
+
+    public abstract int getIndexOfOption(char option);
 } // end of abstract class SudokuGrid
+

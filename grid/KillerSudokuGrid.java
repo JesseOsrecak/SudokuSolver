@@ -93,4 +93,9 @@ public class KillerSudokuGrid extends SudokuGrid
         //placeholder
         return -1;
     }//end of getSize()
+
+    public int getIndexOfOption(char option)
+    {
+        return 0;
+    }
 } // end of class KillerSudokuGrid

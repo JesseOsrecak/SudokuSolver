@@ -213,6 +213,7 @@ public class StdSudokuGrid extends SudokuGrid
         grid[row][col] = value;
     }// end of insertAt(int row, int col, char value)
 
+    @Override
     public char getValueAt(int row, int col)
     {
         return grid[row][col];
@@ -222,4 +223,17 @@ public class StdSudokuGrid extends SudokuGrid
     {
         return size;
     }//end of getSize()
+
+    public int getIndexOfOption(char option)
+    {
+        for(int i = 0; i < size; ++i)
+        {
+            if(options[i] == option)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 } // end of class StdSudokuGrid
