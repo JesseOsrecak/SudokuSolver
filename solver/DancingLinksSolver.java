@@ -133,6 +133,7 @@ public class DancingLinksSolver extends StdSudokuSolver
 
         Header rowHeader = currentHeader;
         Header gridHeader = (Header) header.getRight();
+
         //BUILD SECOND CONSTRAINT
         for(int i = 0; i < numberOfCells; ++i)
         {
@@ -144,6 +145,7 @@ public class DancingLinksSolver extends StdSudokuSolver
                     //set Head to start rowHead
                     currentHeader = rowHeader;
                 }
+
                 //Move Down
                 currentNode = currentNode.getDown();
 
@@ -175,7 +177,7 @@ public class DancingLinksSolver extends StdSudokuSolver
             }
             
             
-            if(i%size == 3)
+            if(i%size == size - 1)
             {
                 rowHeader = currentHeader;
             }
@@ -183,7 +185,6 @@ public class DancingLinksSolver extends StdSudokuSolver
             gridHeader = (Header) gridHeader.getRight();
         }
         
-
         //BUILD THIRD CONSTRAINT
         Header collumnHeader = currentHeader;
         gridHeader = (Header) header.getRight();
@@ -229,7 +230,7 @@ public class DancingLinksSolver extends StdSudokuSolver
                 gridHeader = (Header) gridHeader.getRight();
             }
         }
-
+        
         //BUILD FOURTH CONSTRAINT
         int rootSize = (int)Math.sqrt(size);
         gridHeader = (Header) header.getRight();
@@ -255,7 +256,9 @@ public class DancingLinksSolver extends StdSudokuSolver
                         {
 
                             currentNode = currentNode.getDown();
-
+                            
+                            
+                            
                             //Instansiate Node
                             currentNode.getRight().getRight().setRight(new Node(l));
 
