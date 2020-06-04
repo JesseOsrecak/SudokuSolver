@@ -4,6 +4,8 @@
 
 package solver;
 
+import grid.KillerSudokuGrid;
+import grid.SudokuGrid;
 
 /**
  * Abstract class for common attributes or methods for solvers of Killer
@@ -13,5 +15,6 @@ package solver;
  */
 public abstract class KillerSudokuSolver extends SudokuSolver
 {
+    KillerSudokuGrid grid;
 
 } // end of class KillerSudokuSolver

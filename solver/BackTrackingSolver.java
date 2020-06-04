@@ -4,6 +4,7 @@
 
 package solver;
 
+import grid.StdSudokuGrid;
 import grid.SudokuGrid;
 
 
@@ -13,7 +14,7 @@ import grid.SudokuGrid;
 public class BackTrackingSolver extends StdSudokuSolver
 {
     // TODO: Add attributes as needed.
-    SudokuGrid grid;
+    StdSudokuGrid grid;
 
     public BackTrackingSolver() 
     {
@@ -24,7 +25,7 @@ public class BackTrackingSolver extends StdSudokuSolver
     @Override
     public boolean solve(SudokuGrid grid) {
         
-        this.grid = grid;
+        this.grid = (StdSudokuGrid) grid;
         solveCell(0,0);
     
         return grid.validate();

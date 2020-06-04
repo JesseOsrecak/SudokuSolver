@@ -5,6 +5,7 @@
 package solver;
 
 import grid.SudokuGrid;
+import grid.KillerSudokuGrid;
 
 
 /**
@@ -12,8 +13,8 @@ import grid.SudokuGrid;
  */
 public class KillerBackTrackingSolver extends KillerSudokuSolver
 {
-    // TODO: Add attributes as needed.
 
+    private int size;
     public KillerBackTrackingSolver() {
         // TODO: any initialisation you want to implement.
     } // end of KillerBackTrackingSolver()
@@ -21,10 +22,43 @@ public class KillerBackTrackingSolver extends KillerSudokuSolver
 
     @Override
     public boolean solve(SudokuGrid grid) {
-        // TODO: your implementation of a backtracking solver for Killer Sudoku.
-
-        // placeholder
-        return false;
+        this.grid = (KillerSudokuGrid) grid;
+        size = grid.getSize();
+        
+        return solveCell(0, 0);
     } // end of solve()
+
+    private boolean solveCell(int row, int col)
+    {
+        boolean solved = false;
+        for(int index = 0; index < size && !solved; ++index)
+        {
+            grid.insertAt(row, col, grid.getValueAt(index));
+
+            if(grid.validateCurrent())
+            {
+                
+                if(col != size -1)
+                {
+                    solved = solveCell(row, col + 1);
+                }
+                else if(row != size -1)
+                {
+                    solved = solveCell( row + 1, 0);
+                }
+                else
+                {
+                    solved = true;
+                }
+            }
+
+            if(!solved)
+            {
+                grid.removeAt(row,col);
+            }
+        }
+
+        return solved;
+    }
 
 } // end of class KillerBackTrackingSolver()

@@ -24,6 +24,8 @@ public class KillerSudokuGrid extends SudokuGrid
 
     int[][] outputGrid;
 
+    Node[] nodes;
+
     public KillerSudokuGrid() {
         super();
 
@@ -46,7 +48,6 @@ public class KillerSudokuGrid extends SudokuGrid
         
        
         size = Integer.parseInt(br.readLine());
-        options = new char[size];
 
         line = br.readLine();
         String[] elements = line.split(" ");
@@ -62,11 +63,17 @@ public class KillerSudokuGrid extends SudokuGrid
 
 
         line = br.readLine();
-
+        nodes = new Node[Integer.parseInt(line)];
+        line = br.readLine();
+        int total = 0;
+        int constraintNumber = 0;
         while(line != null)
         {
             String[] variables = line.split(" ");
             Node node = new Node(Integer.parseInt(variables[0]));
+            nodes[constraintNumber++] = node;
+            total += node.getCapacity();
+            
             for(int i = 1; i < variables.length; ++i)
             {
                 String[] cordinates = variables[i].split(",");
@@ -77,7 +84,31 @@ public class KillerSudokuGrid extends SudokuGrid
         }
 
         br.close();
-        // TODO
+
+        //Validate Totals
+        if(total != getExpectedGridCapacity())
+        {
+            throw new IOException("Given Capacities != expected capacity");
+        }
+
+        //Validate that every cell has an expected total
+        boolean hasNull = false;
+        for(int row = 0; row < size ; ++row)
+        {
+            for(int col = 0; col < size; ++col)
+            {
+                if(inputGrid[row][col] == null)
+                {
+                    hasNull = true;
+                }
+            }
+        }
+        if(hasNull)
+        {
+            throw new IOException("File incomplete, killer sudoku grid is missing totals");
+        }
+
+
     } // end of initBoard()
 
 
@@ -92,20 +123,19 @@ public class KillerSudokuGrid extends SudokuGrid
     @Override
     public String toString() {
         String string = "";
-        string += "Size: " + size + "x" + size + "\n";
-
-        for(int i = 0; i < size; ++i)
-        {
-            string += values[i] + ", ";
-        }
-
-        string += "\n\n";
 
         for(int row = 0; row < size; ++row)
         {
             for(int col = 0; col < size; ++col)
             {
-                string += inputGrid[row][col].getCapacity();
+                if(outputGrid[row][col] != 0)
+                {
+                    string += outputGrid[row][col];
+                }
+                else
+                {
+                    string += " ";
+                }
 
                 if(col != size -1)
                 {
@@ -114,7 +144,7 @@ public class KillerSudokuGrid extends SudokuGrid
             }
             string += "\n";
         }
-        // placeholder
+
         return string;
     } // end of toString()
 
@@ -122,50 +152,243 @@ public class KillerSudokuGrid extends SudokuGrid
     @Override
     public boolean validate() 
     {
+        boolean validated = true;
 
-        // TODO Validate Sum Constraint
+        //Validate Nodes array (All value = capacity)
+        validated = validateNodesEqual();
+
+        if(validated)
+        {
+            //Validate Rows
+            validated = validateRows();
+            if(validated)
+            {
+                //Validate Collumns
+                validated = validateCollumns();
+                if(validated)
+                {
+                    //Validate Boxes
+                    validated = validateBoxes();
+                }
+            }
+        }
 
         // placeholder
-        return false;
+        return validated;
     } // end of validate()
 
+    private boolean validateNodesEqual()
+    {
+        boolean validated = true;
+        for(int index = 0; index < nodes.length && validated; ++index)
+        {
+            if(!nodes[index].validateFull())
+            {
+                validated = false;
+            }
+        }
+
+        return validated;
+    }
+
+    private boolean validateRows()
+    {
+        boolean validated = true;
+        
+        for(int index = 0; index < size && validated; ++index)
+        {
+            validated = validateRow(index);
+        }
+
+        return validated;
+    }
+
+    private boolean validateRow(int row)
+    {
+
+        boolean validated = true;
+        for(int index = 0; index < size && validated; ++index)
+        {
+            int count = 0;
+            for(int collumn = 0; collumn < size; ++collumn)
+            {
+                if(outputGrid[row][collumn] == values[index])
+                {
+                    ++count;
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
+
+    private boolean validateCollumns()
+    {
+        boolean validated = true;
+        
+        for(int index = 0; index < size && validated; ++index)
+        {
+            validated = validateCollumn(index);
+        }
+
+        return validated;
+    }
+
+    private boolean validateCollumn(int collumn)
+    {
+
+        boolean validated = true;
+        for(int index = 0; index < size && validated; ++index)
+        {
+            int count = 0;
+            for(int row = 0; row < size; ++row)
+            {
+                if(outputGrid[row][collumn] == values[index])
+                {
+                    ++count;
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
+
+    private boolean validateBoxes()
+    {
+        boolean validated = true;
+        int square = (int)Math.sqrt(size);
+        for(int x = 0 ; x < size-1 && validated; x = x + square)
+        {
+            for(int y = 0; y < size-1 && validated; y = y+square)
+            {
+                validated = validateBox(x, y);
+            }
+        }
+        return validated;
+    }
+
+    private boolean validateBox(int x, int y)
+    {
+        boolean validated = true;
+        int square = (int)Math.sqrt(size);
+        int count = 0;
+
+        for(int index = 0; index < size && validated; ++index)
+        {
+            count = 0;
+            for(int row = x; row < x+square; ++row)
+            {
+                for(int col = y; col< y+square; ++col)
+                {
+                    if(outputGrid[row][col] == values[index])
+                    {
+                        ++count;
+                    }
+                }
+            }
+            if(count > 1)
+            {
+                validated = false;
+            }
+        }
+        return validated;
+    }
+
+
+
+
+
+    public int getExpectedGridCapacity()
+    {
+        int total = 0;
+
+        for(int index = 0; index < size; ++index)
+        {
+            total += values[index]*size;
+        }
+
+        return total;
+    }
+
+
     @Override
-    public char getOptionAt(int index)
-    {
-        //TODO
-
-        //placeholder
-        return '\u0000';
-    }// end of getOptionAt(int index)
-
-    @Override
-    public void insertAt(int row, int col, char value)
-    {
-        //TODO
-
-    }// end of insertAt(int row, int col, char value)
-
-    public char getValueAt(int row, int col)
-    {
-        //TODO
-
-        //placeholder
-        return '\u0000';
-    }//end of getValueAt(int row, int col)
-
     public int getSize()
     {
-        //TODO
-
-        //placeholder
-        return -1;
+        return size;
     }//end of getSize()
 
-    public int getIndexOfOption(char option)
+
+    public void insertAt(int row, int col, int value)
     {
-        return 0;
+        outputGrid[row][col] = value;
+        inputGrid[row][col].addValue(value);
     }
+
+    public void removeAt(int row, int col)
+    {
+        inputGrid[row][col].subtractValue(outputGrid[row][col]);
+        outputGrid[row][col] = 0;
+    }
+
+    public boolean validateCurrent()
+    {
+        boolean validated = true;
+
+        //Validate Nodes array (All value = capacity)
+        validated = validateNodesless();
+
+        if(validated)
+        {
+            //Validate Rows
+            validated = validateRows();
+            if(validated)
+            {
+                //Validate Collumns
+                validated = validateCollumns();
+                if(validated)
+                {
+                    //Validate Boxes
+                    validated = validateBoxes();
+                }
+            }
+        }
+
+        // placeholder
+        return validated;
+    }
+
+    private boolean validateNodesless()
+    {
+        boolean validated = true;
+        for(int index = 0; index < nodes.length && validated; ++index)
+        {
+            if(!nodes[index].isUnderOrEqual())
+            {
+                validated = false;
+            }
+        }
+
+        return validated;
+    }
+
+    public int getValueAt(int index)
+    {
+        return values[index];
+    }
+
 } // end of class KillerSudokuGrid
+
+
+
+
+
+
 
 class Node
 {

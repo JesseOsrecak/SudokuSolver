@@ -4,6 +4,7 @@
 
 package solver;
 
+import grid.StdSudokuGrid;
 import grid.SudokuGrid;
 
 
@@ -15,7 +16,7 @@ public class DancingLinksSolver extends StdSudokuSolver
     private Header header;
     private int size;
     private int numberOfCells;
-    SudokuGrid grid;
+    StdSudokuGrid grid;
     public DancingLinksSolver() 
     {
         header = new Header();
@@ -26,7 +27,7 @@ public class DancingLinksSolver extends StdSudokuSolver
     @Override
     public boolean solve(SudokuGrid grid) 
     {
-        this.grid = grid;
+        this.grid = (StdSudokuGrid) grid;
         size = grid.getSize();
         numberOfCells = size*size;
         buildLinkedList();

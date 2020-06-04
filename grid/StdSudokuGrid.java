@@ -19,6 +19,8 @@ import java.util.Arrays;
 public class StdSudokuGrid extends SudokuGrid
 {
 
+    private char grid[][];
+    private char options[];
 
     public StdSudokuGrid() {
         super();
@@ -201,24 +203,23 @@ public class StdSudokuGrid extends SudokuGrid
         return validated;
     }
 
-    @Override
     public char getOptionAt(int index)
     {
         return options[index];
     }// end of getOptionAt(int index)
 
-    @Override
+
     public void insertAt(int row, int col, char value)
     {
         grid[row][col] = value;
     }// end of insertAt(int row, int col, char value)
 
-    @Override
     public char getValueAt(int row, int col)
     {
         return grid[row][col];
     }//end of getValueAt(int row, int col)
 
+    @Override
     public int getSize()
     {
         return size;

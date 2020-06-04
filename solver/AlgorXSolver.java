@@ -3,6 +3,7 @@
  */
 package solver;
 
+import grid.StdSudokuGrid;
 import grid.SudokuGrid;
 
 
@@ -11,7 +12,7 @@ import grid.SudokuGrid;
  */
 public class AlgorXSolver extends StdSudokuSolver
 {
-    SudokuGrid grid;
+    StdSudokuGrid grid;
     int size;
     int numberOfCells;
     int[][] matrix;
@@ -31,7 +32,7 @@ public class AlgorXSolver extends StdSudokuSolver
             return chooseCollumn(build2dArray(0), 0)
         */
 
-        this.grid = grid;
+        this.grid = (StdSudokuGrid) grid;
         size = grid.getSize();
         numberOfCells = size * size;
         numberOfRows = numberOfCells*size;
